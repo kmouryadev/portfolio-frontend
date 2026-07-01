@@ -49,5 +49,8 @@ export async function getSiteConfig(): Promise<SiteConfig> {
     photoUrl: resolveAssetUrl(fields.photoUrl, assetMap) || "",
     resumeUrl: resolveAssetUrl(fields.resume, assetMap) || "",
     stats,
+    seoTitle: fields.seoTitle || fields.title || "",
+    seoDescription: fields.seoDescription || fields.tagline || "",
+    seoKeywords: fields.seoKeywords || [],
   };
 }
