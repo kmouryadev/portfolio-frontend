@@ -71,6 +71,9 @@ export interface SiteConfigFields {
   photoUrl?: CDALink;
   resume?: CDALink;
   stats?: CDALink[];
+  seoTitle?: string;
+  seoDescription?: string;
+  seoKeywords?: string[];
 }
 
 export interface ExperienceFields {
@@ -132,6 +135,9 @@ export interface SiteConfig {
   photoUrl: string;
   resumeUrl: string;
   stats: SiteStat[];
+  seoTitle: string;
+  seoDescription: string;
+  seoKeywords: string[];
 }
 
 export interface Experience {
