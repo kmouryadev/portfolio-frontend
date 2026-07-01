@@ -9,6 +9,7 @@ import SelectedWork from "./components/SelectedWork";
 import Skills from "./components/Skills";
 import Experience from "./components/Experience";
 import Contact from "./components/Contact";
+import ChatWidget from "./components/ChatWidget";
 
 export const revalidate = 60;
 
@@ -28,6 +29,7 @@ export default async function Home() {
         <Experience experience={experience} />
         <Contact config={config} />
       </main>
+      <ChatWidget/>
     </>
   );
 }
