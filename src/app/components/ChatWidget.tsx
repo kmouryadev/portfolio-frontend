@@ -82,7 +82,7 @@ export default function ChatWidget() {
             <div className="flex items-center gap-2.5">
               <div>
                 <p className="font-display font-bold text-[13px] text-[var(--text)]">
-                  Ask me anything
+                  Ask me anything about Karun Mourya
                 </p>
                 <p className="text-[10px] text-[var(--green)] flex items-center gap-1">
                   <span className="w-[5px] h-[5px] rounded-full bg-[var(--green)] inline-block" />
