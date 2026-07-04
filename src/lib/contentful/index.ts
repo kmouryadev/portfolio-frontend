@@ -3,6 +3,8 @@ export type {
   SiteStat,
   Experience,
   Project,
+  ProjectType,
+  Challenge,
   Skill,
   SkillGroup,
 } from "./types";
@@ -10,7 +12,7 @@ export type {
 export { getSiteConfig } from "./site-config";
 export { getExperience } from "./experience";
 export {
-  getAllProjects,
+  getProjects,
   getFeaturedProjects,
   getProjectBySlug,
   getProjectSlugs,

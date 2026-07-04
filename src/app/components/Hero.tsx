@@ -228,7 +228,7 @@ export default function Hero({
   return (
     <section
       id="hero"
-      className="min-h-screen flex items-center px-6 relative overflow-hidden"
+      className="min-[860px]:min-h-screen flex items-center px-6 pb-16 min-[860px]:pb-0 relative overflow-hidden"
     >
       <div
         aria-hidden
@@ -262,12 +262,12 @@ export default function Hero({
             )}
 
             <div className="flex gap-3 mt-8 flex-wrap">
-              <Button href="/projects" size="lg">
+              <Button href="/projects" size="md">
                 View my work →
               </Button>
               <Button
                 href={`mailto:${config.email}`}
-                size="lg"
+                size="md"
                 variant="secondary"
               >
                 Get in touch

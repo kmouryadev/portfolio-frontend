@@ -37,7 +37,7 @@ export default function Skills({ skillGroups }: { skillGroups: SkillGroup[] }) {
               viewport={{ once: true, margin: "-60px" }}
               transition={{ delay: groupIndex * 0.08 }}
             >
-              <p className="text-[var(--text-dim)] text-xs font-semibold uppercase tracking-[0.08em] mb-5">
+              <p className="text-[var(--text-muted)] text-xs font-semibold uppercase tracking-[0.08em] mb-5">
                 {group.category}
               </p>
 

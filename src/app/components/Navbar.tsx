@@ -56,11 +56,14 @@ export default function Navbar({ config }: { config: SiteConfig }) {
             </li>
           ))}
           <li>
-            <Button href={`mailto:${config.email}`}>Hire me</Button>
+            <Button href={`mailto:${config.email}`} size="md">
+              Hire me
+            </Button>
           </li>
         </ul>
 
-        <button
+        <Button
+          variant="custom"
           className="md:hidden bg-transparent border-none cursor-pointer text-[var(--text)] text-[22px]"
           onClick={() => setMenuOpen((open) => !open)}
           aria-label="Toggle menu"
@@ -68,7 +71,7 @@ export default function Navbar({ config }: { config: SiteConfig }) {
           aria-controls="mobile-menu"
         >
           {menuOpen ? "✕" : "☰"}
-        </button>
+        </Button>
       </div>
 
       {menuOpen && (
@@ -86,7 +89,11 @@ export default function Navbar({ config }: { config: SiteConfig }) {
               {link.label}
             </Link>
           ))}
-          <Button href={`mailto:${config.email}`} className="block mt-4">
+          <Button
+            href={`mailto:${config.email}`}
+            className="block mt-4"
+            size="md"
+          >
             Hire me
           </Button>
         </div>
