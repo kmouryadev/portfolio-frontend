@@ -2,14 +2,15 @@ import Link from "next/link";
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-type ButtonVariant = "primary" | "secondary";
+type ButtonVariant = "primary" | "secondary" | "custom";
 type ButtonSize = "sm" | "md" | "lg";
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
     "bg-[var(--accent)] text-white transition-opacity duration-200 hover:opacity-[0.85]",
   secondary:
-    "bg-transparent text-[var(--text)] border border-[var(--border)] transition-colors duration-200 hover:border-[var(--accent-light)]",
+    "bg-[var(--accent-dim)] text-[var(--accent-light)] border border-[var(--accent)] transition-colors duration-200 hover:border-[var(--accent-light)]",
+  custom: "",
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
@@ -19,7 +20,7 @@ const sizeStyles: Record<ButtonSize, string> = {
 };
 
 const baseStyles =
-  "inline-block rounded-lg font-semibold no-underline text-center";
+  "inline-block w-full sm:w-auto rounded-lg font-semibold no-underline text-center";
 
 type SharedProps = {
   variant?: ButtonVariant;
@@ -43,7 +44,10 @@ export default function Button({
   children,
   ...props
 }: ButtonProps) {
-  const classes = cn(baseStyles, variantStyles[variant], sizeStyles[size], className);
+  const classes =
+    variant === "custom"
+      ? cn(className)
+      : cn(baseStyles, variantStyles[variant], sizeStyles[size], className);
 
   if (props.href !== undefined) {
     const { href, ...anchorProps } = props as LinkButtonProps;

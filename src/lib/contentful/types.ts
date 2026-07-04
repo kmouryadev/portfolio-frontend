@@ -1,3 +1,5 @@
+import type { Document } from "@contentful/rich-text-types";
+
 export interface CDALink {
   sys: {
     type: "Link";
@@ -86,25 +88,34 @@ export interface ExperienceFields {
   order?: number;
 }
 
+export type ProjectType = "personal" | "professional";
+
 export interface ProjectFields {
   title: string;
   slug: string;
-  type?: "company" | "personal";
-  role?: string;
-  tagline?: string;
-  description?: string;
-  coverImage?: CDALink;
-  stack?: string[];
-  isCompany?: boolean;
-  architectureDiagram?: CDALink;
-  architectureDescription?: string;
-  features?: string[];
-  challenges?: string[];
-  learnings?: string[];
+  summary: string;
+  projectType: ProjectType;
+  clientAlias?: string;
+  skill?: CDALink[];
+  challenges?: CDALink[];
+  thumbnail?: CDALink;
   liveUrl?: string;
   githubUrl?: string;
   featured?: boolean;
   order?: number;
+  role?: string[];
+  features?: string[];
+  keyLearnings?: string[];
+}
+
+export interface ChallengeFields {
+  title: string;
+  context: string;
+  approach?: Document;
+  outcome?: string;
+  myTake?: string;
+  learning?: string;
+  tags?: string[];
 }
 
 export interface SkillFields {
@@ -150,25 +161,32 @@ export interface Experience {
   order: number;
 }
 
+export interface Challenge {
+  title: string;
+  context: string;
+  approach: Document | null;
+  outcome: string | null;
+  myTake: string | null;
+  learning: string | null;
+  tags: string[];
+}
+
 export interface Project {
   title: string;
   slug: string;
-  type: "company" | "personal";
-  role: string;
-  tagline: string;
-  description: string;
-  coverImage: string | null;
-  stack: string[];
-  isCompany: boolean;
-  architectureDiagram: string | null;
-  architectureDescription: string;
-  features: string[];
-  challenges: string[];
-  learnings: string[];
-  liveUrl: string;
-  githubUrl: string;
+  summary: string;
+  projectType: ProjectType;
+  clientAlias: string | null;
+  skills: Skill[];
+  challenges: Challenge[];
+  thumbnail: string | null;
+  liveUrl: string | null;
+  githubUrl: string | null;
   featured: boolean;
   order: number;
+  role: string[];
+  features: string[];
+  keyLearnings: string[];
 }
 
 export interface Skill {

@@ -1,5 +1,6 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
+import Button from "./ui-components/Button";
 
 type Message = { role: "user" | "assistant"; content: string };
 
@@ -90,13 +91,14 @@ export default function ChatWidget() {
                 </p>
               </div>
             </div>
-            <button
+            <Button
+              variant="custom"
               onClick={() => setOpen(false)}
               aria-label="Close chat"
               className="bg-transparent border-none text-[var(--text-muted)] cursor-pointer text-lg leading-none p-1"
             >
               ✕
-            </button>
+            </Button>
           </div>
 
           <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-2.5">
@@ -145,7 +147,8 @@ export default function ChatWidget() {
               className="font-mono flex-1 bg-[var(--bg-card2)] border border-[var(--border)] rounded-lg px-3 py-[9px] text-[var(--text)] text-[13px] outline-none min-w-0"
               aria-label="Chat message"
             />
-            <button
+            <Button
+              variant="custom"
               onClick={send}
               disabled={loading || !input.trim()}
               aria-label="Send message"
@@ -156,18 +159,19 @@ export default function ChatWidget() {
               }`}
             >
               →
-            </button>
+            </Button>
           </div>
         </div>
       )}
 
-      <button
+      <Button
+        variant="custom"
         onClick={() => setOpen((open) => !open)}
         aria-label={open ? "Close chat" : "Open AI chat"}
         className="fixed bottom-6 right-6 z-[200] w-[52px] h-[52px] rounded-full bg-[var(--accent)] border-none cursor-pointer text-[22px] shadow-[0_4px_20px_rgba(99,102,241,0.4)] transition-[transform,box-shadow] duration-200 hover:scale-110 hover:shadow-[0_6px_28px_rgba(99,102,241,0.6)]"
       >
         {open ? "✕" : "💬"}
-      </button>
+      </Button>
     </>
   );
 }

@@ -1,69 +1,87 @@
 import { cdaFetch } from "./client";
-import { buildAssetMap, resolveAssetUrl } from "./resolvers";
-import type { AssetMap } from "./resolvers";
-import type { Project, ProjectFields, CDAEntry } from "./types";
+import {
+  buildAssetMap,
+  buildEntryMap,
+  resolveAssetUrl,
+  resolveEntries,
+} from "./resolvers";
+import type { AssetMap, EntryMap } from "./resolvers";
+import { toSkill } from "./skills";
+import type {
+  Project,
+  ProjectFields,
+  Challenge,
+  ChallengeFields,
+  SkillFields,
+  CDAEntry,
+} from "./types";
+
+function toChallenge(fields: ChallengeFields): Challenge {
+  return {
+    title: fields.title || "",
+    context: fields.context || "",
+    approach: fields.approach || null,
+    outcome: fields.outcome || null,
+    myTake: fields.myTake || null,
+    learning: fields.learning || null,
+    tags: fields.tags || [],
+  };
+}
 
 function toProject(
   item: CDAEntry<ProjectFields>,
   assetMap: AssetMap,
+  entryMap: EntryMap,
 ): Project {
   const fields = item.fields;
+
+  const skills = resolveEntries<SkillFields>(fields.skill, entryMap).map(
+    (entry) => toSkill(entry.fields, assetMap),
+  );
+  const challenges = resolveEntries<ChallengeFields>(
+    fields.challenges,
+    entryMap,
+  ).map((entry) => toChallenge(entry.fields));
+
   return {
     title: fields.title || "",
-    slug: fields.slug || "",
-    type: fields.type || "personal",
-    role: fields.role || "",
-    tagline: fields.tagline || "",
-    description: fields.description || "",
-    coverImage: resolveAssetUrl(fields.coverImage, assetMap),
-    stack: fields.stack || [],
-    isCompany: fields.isCompany || false,
-    architectureDiagram: resolveAssetUrl(fields.architectureDiagram, assetMap),
-    architectureDescription: fields.architectureDescription || "",
-    features: fields.features || [],
-    challenges: fields.challenges || [],
-    learnings: fields.learnings || [],
-    liveUrl: fields.liveUrl || "",
-    githubUrl: fields.githubUrl || "",
+    slug: (fields.slug || "").trim(),
+    summary: fields.summary || "",
+    projectType: fields.projectType || "personal",
+    clientAlias: fields.clientAlias || null,
+    skills,
+    challenges,
+    thumbnail: resolveAssetUrl(fields.thumbnail, assetMap),
+    liveUrl: fields.liveUrl || null,
+    githubUrl: fields.githubUrl || null,
     featured: fields.featured || false,
     order: fields.order || 0,
+    role: fields.role || [],
+    features: fields.features || [],
+    keyLearnings: fields.keyLearnings || [],
   };
 }
 
-export async function getAllProjects(): Promise<Project[]> {
+export async function getProjects(): Promise<Project[]> {
   const response = await cdaFetch<ProjectFields>({
     content_type: "project",
     order: "fields.order",
   });
   const assetMap = buildAssetMap(response.includes?.Asset);
-  return response.items.map((item) => toProject(item, assetMap));
+  const entryMap = buildEntryMap(response.includes?.Entry);
+  return response.items.map((item) => toProject(item, assetMap, entryMap));
 }
 
 export async function getFeaturedProjects(): Promise<Project[]> {
-  const response = await cdaFetch<ProjectFields>({
-    content_type: "project",
-    "fields.featured": true,
-    order: "fields.order",
-  });
-  const assetMap = buildAssetMap(response.includes?.Asset);
-  return response.items.map((item) => toProject(item, assetMap));
+  return (await getProjects()).filter((project) => project.featured);
 }
 
 export async function getProjectBySlug(slug: string): Promise<Project | null> {
-  const response = await cdaFetch<ProjectFields>({
-    content_type: "project",
-    "fields.slug": slug,
-    limit: 1,
-  });
-  if (!response.items.length) return null;
-  const assetMap = buildAssetMap(response.includes?.Asset);
-  return toProject(response.items[0], assetMap);
+  const projects = await getProjects();
+  return projects.find((project) => project.slug === slug) || null;
 }
 
 export async function getProjectSlugs(): Promise<string[]> {
-  const response = await cdaFetch<ProjectFields>({
-    content_type: "project",
-    select: "fields.slug",
-  });
-  return response.items.map((item) => item.fields.slug || "").filter(Boolean);
+  const projects = await getProjects();
+  return projects.map((project) => project.slug).filter(Boolean);
 }

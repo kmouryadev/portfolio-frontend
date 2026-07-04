@@ -34,6 +34,8 @@ export default function About({ config }: { config: SiteConfig }) {
                 alt={config.name}
                 fill
                 className="object-cover"
+                sizes="(max-width: 768px) 200px, 280px"
+                priority
               />
             )}
           </div>
@@ -64,13 +66,16 @@ export default function About({ config }: { config: SiteConfig }) {
           </div>
 
           <div className="flex gap-3 mt-7 flex-wrap">
-            <Button href={`mailto:${config.email}`}>Get in touch</Button>
+            <Button href={`mailto:${config.email}`} size="md">
+              Get in touch
+            </Button>
             {config.resumeUrl && (
               <Button
                 href={config.resumeUrl}
                 target="_blank"
                 rel="noreferrer"
                 variant="secondary"
+                size="md"
               >
                 Download CV
               </Button>

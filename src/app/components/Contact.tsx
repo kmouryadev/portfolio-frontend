@@ -7,10 +7,6 @@ export default function Contact({ config }: { config: SiteConfig }) {
   const socialLinks = [
     config.linkedin && { label: "LinkedIn", href: config.linkedin },
     config.github && { label: "GitHub", href: config.github },
-    config.phone && {
-      label: config.phone,
-      href: `tel:${config.phone.replace(/\s/g, "")}`,
-    },
   ].filter(Boolean) as { label: string; href: string }[];
 
   return (
@@ -32,9 +28,9 @@ export default function Contact({ config }: { config: SiteConfig }) {
           Let&apos;s work together
         </h2>
         <p className="text-[var(--text-muted)] text-[clamp(14px,2vw,17px)] leading-[1.75] mb-10">
-          I&apos;m actively looking for remote roles. If you&apos;re building
-          something interesting and need a full stack engineer who ships, reach
-          out.
+          I always love to connect with others to share knowledge. If
+          you&apos;re building something interesting and need a full stack
+          engineer who ships, reach out.
         </p>
 
         <a
@@ -44,7 +40,7 @@ export default function Contact({ config }: { config: SiteConfig }) {
           {config.email}
         </a>
 
-        {socialLinks.length > 0 && (
+        {(socialLinks.length > 0 || config.phone) && (
           <div className="flex justify-center gap-[clamp(16px,4vw,32px)] mt-10 flex-wrap">
             {socialLinks.map((link) => (
               <a
@@ -57,6 +53,17 @@ export default function Contact({ config }: { config: SiteConfig }) {
                 {link.label}
               </a>
             ))}
+            {config.phone && (
+              <a
+                href={`tel:${config.phone.replace(/\s/g, "")}`}
+                className="group relative text-[var(--text-muted)] text-sm font-medium no-underline transition-colors duration-200 hover:text-[var(--accent-light)]"
+              >
+                <span className="group-hover:hidden">Contact number</span>
+                <span className="hidden group-hover:inline">
+                  {config.phone}
+                </span>
+              </a>
+            )}
           </div>
         )}
       </motion.div>
