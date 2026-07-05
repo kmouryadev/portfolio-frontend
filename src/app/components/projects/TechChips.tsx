@@ -8,12 +8,13 @@ const OVERFLOW_CLS =
   "font-mono bg-[var(--bg-card2)] text-[var(--text-dim)] px-2.5 py-1 rounded-full text-[11px] whitespace-nowrap shrink-0";
 const GAP_PX = 5;
 
-function WrappingChips({ skills, max }: { skills: Skill[]; max: number }) {
-  const overflow = skills.length - max;
+function WrappingChips({ skills, max }: { skills: Skill[]; max?: number }) {
+  const limit = max ?? skills.length;
+  const overflow = skills.length - limit;
 
   return (
     <div className="flex flex-wrap gap-[5px]">
-      {skills.slice(0, max).map((skill) => (
+      {skills.slice(0, limit).map((skill) => (
         <span key={skill.label} className={CHIP_CLS}>
           {skill.label}
         </span>
@@ -92,7 +93,7 @@ function FittedChips({ skills }: { skills: Skill[] }) {
 
 export default function TechChips({
   skills,
-  max = 4,
+  max,
   fit = "wrap",
 }: {
   skills: Skill[];

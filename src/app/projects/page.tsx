@@ -3,7 +3,7 @@ import { getProjects } from "@/lib/contentful/projects";
 import { getSiteConfig } from "@/lib/contentful/site-config";
 import Navbar from "../components/Navbar";
 import ChatWidget from "../components/ChatWidget";
-import ProjectCard from "../components/projects/ProjectCard";
+import ProjectsGrid from "./ProjectsGrid";
 
 export const revalidate = 60;
 
@@ -29,21 +29,7 @@ export default async function ProjectsPage() {
               All Projects
             </h1>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 min-[1100px]:grid-cols-3 gap-6">
-              {projects.map((project, index) => (
-                <ProjectCard
-                  key={project.slug}
-                  project={project}
-                  index={index}
-                />
-              ))}
-            </div>
-
-            {!projects.length && (
-              <p className="text-[var(--text-dim)] text-center py-[60px] text-[15px]">
-                No projects yet.
-              </p>
-            )}
+            <ProjectsGrid projects={projects} />
           </div>
         </section>
       </main>

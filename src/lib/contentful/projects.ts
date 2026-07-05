@@ -10,6 +10,8 @@ import { toSkill } from "./skills";
 import type {
   Project,
   ProjectFields,
+  ProjectLink,
+  ProjectLinkFields,
   Challenge,
   ChallengeFields,
   SkillFields,
@@ -28,6 +30,12 @@ function toChallenge(fields: ChallengeFields): Challenge {
   };
 }
 
+function toProjectLink(fields: ProjectLinkFields): ProjectLink | null {
+  const label = fields.label || "";
+  const url = fields.url || "";
+  return label && url ? { label, url } : null;
+}
+
 function toProject(
   item: CDAEntry<ProjectFields>,
   assetMap: AssetMap,
@@ -42,6 +50,9 @@ function toProject(
     fields.challenges,
     entryMap,
   ).map((entry) => toChallenge(entry.fields));
+  const links = resolveEntries<ProjectLinkFields>(fields.projectLink, entryMap)
+    .map((entry) => toProjectLink(entry.fields))
+    .filter((link): link is ProjectLink => link !== null);
 
   return {
     title: fields.title || "",
@@ -52,8 +63,7 @@ function toProject(
     skills,
     challenges,
     thumbnail: resolveAssetUrl(fields.thumbnail, assetMap),
-    liveUrl: fields.liveUrl || null,
-    githubUrl: fields.githubUrl || null,
+    links,
     featured: fields.featured || false,
     order: fields.order || 0,
     role: fields.role || [],

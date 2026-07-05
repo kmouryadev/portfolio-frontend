@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import type { Project, SiteConfig } from "@/lib/contentful";
+import type { Project, ProjectLink, SiteConfig } from "@/lib/contentful";
 import { fadeUp } from "@/lib/variants";
 import Button from "@/app/components/ui-components/Button";
 import TypeBadge from "@/app/components/projects/TypeBadge";
@@ -58,6 +58,25 @@ function BulletList({ items }: { items: string[] }) {
   );
 }
 
+function ProjectLinkButtons({ links }: { links: ProjectLink[] }) {
+  return (
+    <>
+      {links.map((link, index) => (
+        <Button
+          key={link.label}
+          href={link.url}
+          target="_blank"
+          rel="noreferrer"
+          size="md"
+          variant={index === 0 ? "primary" : "secondary"}
+        >
+          {link.label} →
+        </Button>
+      ))}
+    </>
+  );
+}
+
 function Header({ project }: { project: Project }) {
   return (
     <motion.div
@@ -108,7 +127,7 @@ function Header({ project }: { project: Project }) {
 }
 
 function CaseStudyLayout({ project }: { project: Project }) {
-  const hasFooterLinks = project.liveUrl || project.githubUrl;
+  const hasFooterLinks = project.links.length > 0;
 
   return (
     <div className="flex flex-col gap-12">
@@ -127,7 +146,7 @@ function CaseStudyLayout({ project }: { project: Project }) {
             "text-[var(--text-muted)] text-[clamp(14px,1.7vw,16px)] leading-[1.8]",
           )}
         </div>
-        <TechChips skills={project.skills} max={8} />
+        <TechChips skills={project.skills} />
       </motion.div>
 
       <Section title="Problems I solved">
@@ -152,27 +171,7 @@ function CaseStudyLayout({ project }: { project: Project }) {
       {hasFooterLinks && (
         <Section title="Links">
           <div className="flex gap-3.5 flex-wrap">
-            {project.liveUrl && (
-              <Button
-                href={project.liveUrl}
-                target="_blank"
-                rel="noreferrer"
-                size="md"
-              >
-                Live Demo →
-              </Button>
-            )}
-            {project.githubUrl && (
-              <Button
-                href={project.githubUrl}
-                target="_blank"
-                rel="noreferrer"
-                size="md"
-                variant="secondary"
-              >
-                GitHub →
-              </Button>
-            )}
+            <ProjectLinkButtons links={project.links} />
           </div>
         </Section>
       )}
@@ -181,7 +180,7 @@ function CaseStudyLayout({ project }: { project: Project }) {
 }
 
 function SimpleLayout({ project }: { project: Project }) {
-  const hasFooterLinks = project.liveUrl || project.githubUrl;
+  const hasFooterLinks = project.links.length > 0;
 
   return (
     <div className="flex flex-col gap-12">
@@ -220,33 +219,13 @@ function SimpleLayout({ project }: { project: Project }) {
 
       {project.skills.length > 0 && (
         <div>
-          <TechChips skills={project.skills} max={8} />
+          <TechChips skills={project.skills} />
         </div>
       )}
 
       {hasFooterLinks && (
         <div className="flex gap-3.5 flex-wrap pt-4 border-t border-[var(--border)]">
-          {project.liveUrl && (
-            <Button
-              href={project.liveUrl}
-              target="_blank"
-              rel="noreferrer"
-              size="md"
-            >
-              Live Demo →
-            </Button>
-          )}
-          {project.githubUrl && (
-            <Button
-              href={project.githubUrl}
-              target="_blank"
-              rel="noreferrer"
-              size="md"
-              variant="secondary"
-            >
-              GitHub →
-            </Button>
-          )}
+          <ProjectLinkButtons links={project.links} />
         </div>
       )}
     </div>

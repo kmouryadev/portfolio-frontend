@@ -99,8 +99,7 @@ export interface ProjectFields {
   skill?: CDALink[];
   challenges?: CDALink[];
   thumbnail?: CDALink;
-  liveUrl?: string;
-  githubUrl?: string;
+  projectLink?: CDALink[];
   featured?: boolean;
   order?: number;
   role?: string[];
@@ -116,6 +115,11 @@ export interface ChallengeFields {
   myTake?: string;
   learning?: string;
   tags?: string[];
+}
+
+export interface ProjectLinkFields {
+  label: string;
+  url: string;
 }
 
 export interface SkillFields {
@@ -171,6 +175,11 @@ export interface Challenge {
   tags: string[];
 }
 
+export interface ProjectLink {
+  label: string;
+  url: string;
+}
+
 export interface Project {
   title: string;
   slug: string;
@@ -180,8 +189,7 @@ export interface Project {
   skills: Skill[];
   challenges: Challenge[];
   thumbnail: string | null;
-  liveUrl: string | null;
-  githubUrl: string | null;
+  links: ProjectLink[];
   featured: boolean;
   order: number;
   role: string[];
