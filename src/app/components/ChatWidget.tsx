@@ -1,6 +1,7 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import Button from "./ui-components/Button";
+import ReactMarkdown from "react-markdown";
 
 type Message = { role: "user" | "assistant"; content: string };
 
@@ -63,7 +64,7 @@ export default function ChatWidget() {
         {
           role: "assistant",
           content:
-            "Something went wrong. Try again or reach out via email directly.",
+  "Sorry, I couldn't process that request. This can happen if:\n\n• The question isn't related to Karun Mourya, his experience, skills, or projects.\n• The message contains inappropriate or unsafe language.\n• The server is temporarily unavailable.\n\nPlease try rephrasing your question or ask something about Karun's background, projects, or technical expertise.",
         },
       ]);
     } finally {
@@ -114,7 +115,7 @@ export default function ChatWidget() {
                       : "bg-[var(--bg-card2)] text-[var(--text-muted)] rounded-[14px_14px_14px_4px]"
                   }`}
                 >
-                  {message.content}
+                  <ReactMarkdown>{message.content}</ReactMarkdown>
                 </div>
               </div>
             ))}
