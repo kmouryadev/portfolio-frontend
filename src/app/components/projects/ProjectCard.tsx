@@ -12,9 +12,11 @@ import TechChips from "./TechChips";
 export default function ProjectCard({
   project,
   index = 0,
+  showAllSkills = false,
 }: {
   project: Project;
   index?: number;
+  showAllSkills?: boolean;
 }) {
   const prefersReduced = useReducedMotion();
   const hasCaseStudy = project.challenges.length > 0;
@@ -74,7 +76,11 @@ export default function ProjectCard({
               {renderEmphasis(project.summary)}
             </p>
 
-            <TechChips skills={project.skills} fit="line" />
+            {showAllSkills ? (
+              <TechChips skills={project.skills} fit="wrap" />
+            ) : (
+              <TechChips skills={project.skills} fit="line" />
+            )}
           </div>
         </div>
       </Link>
