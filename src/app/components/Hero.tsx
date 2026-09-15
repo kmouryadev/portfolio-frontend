@@ -29,22 +29,24 @@ const TypedHeadings = memo(function TypedHeadings({
 }: {
   lines: string[];
 }) {
+  const typableIndices = useMemo(
+    () =>
+      lines.reduce<number[]>((indices, line, index) => {
+        if (line) indices.push(index);
+        return indices;
+      }, []),
+    [lines],
+  );
+
   const [step, setStep] = useState(0);
   const [typed, setTyped] = useState("");
   const prefersReduced = useReducedMotion();
-  const done = step >= lines.length;
+  const done = step >= typableIndices.length;
 
   useEffect(() => {
-    if (done) return;
-    if (prefersReduced) {
-      setStep(lines.length);
-      return;
-    }
-    const text = lines[step];
-    if (!text) {
-      setStep((s) => s + 1);
-      return;
-    }
+    if (done || prefersReduced) return;
+    const text = lines[typableIndices[step]];
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- animation state machine, not derived state
     setTyped("");
     let charIndex = 0;
     let pause: ReturnType<typeof setTimeout>;
@@ -59,27 +61,36 @@ const TypedHeadings = memo(function TypedHeadings({
       clearInterval(timer);
       clearTimeout(pause);
     };
-  }, [step, done, lines, prefersReduced]);
+  }, [step, done, lines, prefersReduced, typableIndices]);
 
+  const effectiveStep = prefersReduced ? typableIndices.length : step;
   const cursor = <span className="cursor-blink text-[var(--accent)]">|</span>;
 
   return (
     <h1 aria-label={lines.filter(Boolean).join(" ")}>
-      {lines.map(
-        (line, index) =>
-          line && (
+      {lines.map((line, index) => {
+        if (!line) return null;
+        const position = typableIndices.indexOf(index);
+
+        return (
+          <span
+            key={index}
+            aria-hidden
+            className={`block ${HEADING_CLS} ${LINE_COLORS[index]}`}
+          >
             <span
-              key={index}
-              aria-hidden
-              className={`block ${HEADING_CLS} ${LINE_COLORS[index]}`}
+              className={effectiveStep >= position ? "visible" : "invisible"}
             >
-              <span className={step >= index ? "visible" : "invisible"}>
-                {step > index ? line : step === index ? typed : line}
-              </span>
-              {step === index && cursor}
+              {effectiveStep > position
+                ? line
+                : effectiveStep === position
+                  ? typed
+                  : line}
             </span>
-          ),
-      )}
+            {effectiveStep === position && cursor}
+          </span>
+        );
+      })}
     </h1>
   );
 });
