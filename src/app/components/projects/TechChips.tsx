@@ -14,8 +14,8 @@ function WrappingChips({ skills, max }: { skills: Skill[]; max?: number }) {
 
   return (
     <div className="flex flex-wrap gap-[5px]">
-      {skills.slice(0, limit).map((skill) => (
-        <span key={skill.label} className={CHIP_CLS}>
+      {skills.slice(0, limit).map((skill, index) => (
+        <span key={`${skill.label}-${index}`} className={CHIP_CLS}>
           {skill.label}
         </span>
       ))}
@@ -71,8 +71,8 @@ function FittedChips({ skills }: { skills: Skill[] }) {
         aria-hidden
         className="flex gap-[5px] absolute top-0 left-0 invisible pointer-events-none"
       >
-        {skills.map((skill) => (
-          <span key={skill.label} className={CHIP_CLS}>
+        {skills.map((skill, index) => (
+          <span key={`${skill.label}-${index}`} className={CHIP_CLS}>
             {skill.label}
           </span>
         ))}
@@ -80,8 +80,8 @@ function FittedChips({ skills }: { skills: Skill[] }) {
       </div>
 
       <div className="flex flex-nowrap gap-[5px] overflow-hidden">
-        {skills.slice(0, visibleCount).map((skill) => (
-          <span key={skill.label} className={CHIP_CLS}>
+        {skills.slice(0, visibleCount).map((skill, index) => (
+          <span key={`${skill.label}-${index}`} className={CHIP_CLS}>
             {skill.label}
           </span>
         ))}

@@ -44,7 +44,7 @@ export default function Skills({ skillGroups }: { skillGroups: SkillGroup[] }) {
               <div className="flex flex-wrap gap-[clamp(12px,2vw,20px)]">
                 {group.skills.map((skill, skillIndex) => (
                   <motion.div
-                    key={skill.label}
+                    key={`${skill.label}-${skillIndex}`}
                     initial={{ opacity: 0, scale: 0.85 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
