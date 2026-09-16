@@ -46,7 +46,7 @@ const TypedHeadings = memo(function TypedHeadings({
   useEffect(() => {
     if (done || prefersReduced) return;
     const text = lines[typableIndices[step]];
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- animation state machine, not derived state
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setTyped("");
     let charIndex = 0;
     let pause: ReturnType<typeof setTimeout>;
