@@ -5,6 +5,9 @@ import ReactMarkdown from "react-markdown";
 
 type Message = { role: "user" | "assistant"; content: string };
 
+const REQUEST_TIMEOUT_MS = 15_000;
+const MAX_STORED_MESSAGES = 50;
+
 const INITIAL_MESSAGES: Message[] = [
   {
     role: "assistant",
@@ -12,6 +15,30 @@ const INITIAL_MESSAGES: Message[] = [
       "Hi! I'm trained on this engineer's resume. Ask me about experience, skills, projects, or availability. 👋",
   },
 ];
+
+const UNAVAILABLE_MESSAGE: Message = {
+  role: "assistant",
+  content:
+    "The AI assistant isn't configured for this environment (missing chat API URL), so I can't answer right now. Feel free to reach out via the contact section instead.",
+};
+
+const TIMEOUT_MESSAGE: Message = {
+  role: "assistant",
+  content:
+    "That took too long to respond, so I gave up waiting. The server may be waking up from idle — please try again in a few seconds.",
+};
+
+const ERROR_MESSAGE: Message = {
+  role: "assistant",
+  content:
+    "Sorry, I couldn't process that request. This can happen if:\n\n• The question isn't related to Karun Mourya, his experience, skills, or projects.\n• The message contains inappropriate or unsafe language.\n• The server is temporarily unavailable.\n\nPlease try rephrasing your question or ask something about Karun's background, projects, or technical expertise.",
+};
+
+const userMessage = (content: string): Message => ({ role: "user", content });
+const assistantMessage = (content: string): Message => ({
+  role: "assistant",
+  content,
+});
 
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
@@ -35,41 +62,61 @@ export default function ChatWidget() {
 
   const send = async () => {
     const msg = input.trim();
-    if (!msg || loading || !apiUrl) return;
+    if (!msg || loading) return;
+
+    if (!apiUrl) {
+      setInput("");
+      setMessages((prev) =>
+        [...prev, userMessage(msg), UNAVAILABLE_MESSAGE].slice(
+          -MAX_STORED_MESSAGES,
+        ),
+      );
+      return;
+    }
+
     setInput("");
-    setMessages((prev) => [...prev, { role: "user", content: msg }]);
+    setMessages((prev) =>
+      [...prev, userMessage(msg)].slice(-MAX_STORED_MESSAGES),
+    );
     setLoading(true);
 
     const warmTimer = setTimeout(() => setWarmingUp(true), 3000);
+    const controller = new AbortController();
+    const timeoutTimer = setTimeout(
+      () => controller.abort(),
+      REQUEST_TIMEOUT_MS,
+    );
 
     try {
       const response = await fetch(`${apiUrl}/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: msg }),
+        signal: controller.signal,
       });
-      clearTimeout(warmTimer);
-      setWarmingUp(false);
       if (!response.ok) throw new Error("API error");
       const data = await response.json();
-      setMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: data.answer },
-      ]);
-    } catch {
-      clearTimeout(warmTimer);
-      setWarmingUp(false);
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          content:
-  "Sorry, I couldn't process that request. This can happen if:\n\n• The question isn't related to Karun Mourya, his experience, skills, or projects.\n• The message contains inappropriate or unsafe language.\n• The server is temporarily unavailable.\n\nPlease try rephrasing your question or ask something about Karun's background, projects, or technical expertise.",
-        },
-      ]);
+      setMessages((prev) =>
+        [...prev, assistantMessage(data.answer)].slice(-MAX_STORED_MESSAGES),
+      );
+    } catch (error) {
+      const isTimeout =
+        error instanceof DOMException && error.name === "AbortError";
+      setMessages((prev) =>
+        [...prev, isTimeout ? TIMEOUT_MESSAGE : ERROR_MESSAGE].slice(
+          -MAX_STORED_MESSAGES,
+        ),
+      );
     } finally {
+      clearTimeout(warmTimer);
+      clearTimeout(timeoutTimer);
+      setWarmingUp(false);
       setLoading(false);
     }
+  };
+
+  const clearChat = () => {
+    setMessages(INITIAL_MESSAGES);
   };
 
   return (
@@ -88,18 +135,28 @@ export default function ChatWidget() {
                 </p>
                 <p className="text-[10px] text-[var(--green)] flex items-center gap-1">
                   <span className="w-[5px] h-[5px] rounded-full bg-[var(--green)] inline-block" />
-                  Powered by Gemini RAG
+                  Powered by RAG
                 </p>
               </div>
             </div>
-            <Button
-              variant="custom"
-              onClick={() => setOpen(false)}
-              aria-label="Close chat"
-              className="bg-transparent border-none text-[var(--text-muted)] cursor-pointer text-lg leading-none p-1"
-            >
-              ✕
-            </Button>
+            <div className="flex items-center gap-1">
+              <Button
+                variant="custom"
+                onClick={clearChat}
+                aria-label="Clear chat"
+                className="bg-transparent border-none text-[var(--text-muted)] cursor-pointer text-xs leading-none px-1.5 py-1"
+              >
+                Clear
+              </Button>
+              <Button
+                variant="custom"
+                onClick={() => setOpen(false)}
+                aria-label="Close chat"
+                className="bg-transparent border-none text-[var(--text-muted)] cursor-pointer text-lg leading-none p-1"
+              >
+                ✕
+              </Button>
+            </div>
           </div>
 
           <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-2.5">
