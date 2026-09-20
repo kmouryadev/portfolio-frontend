@@ -105,6 +105,7 @@ export interface ProjectFields {
   role?: string[];
   features?: string[];
   keyLearnings?: string[];
+  architectureImage?: CDALink;
 }
 
 export interface ChallengeFields {
@@ -195,6 +196,7 @@ export interface Project {
   role: string[];
   features: string[];
   keyLearnings: string[];
+  architectureImage: string | null;
 }
 
 export interface Skill {

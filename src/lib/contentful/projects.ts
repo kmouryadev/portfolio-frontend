@@ -69,6 +69,7 @@ function toProject(
     role: fields.role || [],
     features: fields.features || [],
     keyLearnings: fields.keyLearnings || [],
+    architectureImage: resolveAssetUrl(fields.architectureImage, assetMap),
   };
 }
 

@@ -41,6 +41,7 @@ function makeProject(overrides: Partial<Project>): Project {
     role: [],
     features: [],
     keyLearnings: [],
+    architectureImage: null,
     ...overrides,
   };
 }

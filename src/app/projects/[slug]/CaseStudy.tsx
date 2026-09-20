@@ -8,6 +8,7 @@ import Button from "@/app/components/ui-components/Button";
 import TypeBadge from "@/app/components/projects/TypeBadge";
 import TechChips from "@/app/components/projects/TechChips";
 import ChallengeAccordion from "@/app/components/projects/ChallengeAccordion";
+import ArchitectureDiagram from "@/app/components/projects/ArchitectureDiagram";
 import { renderParagraphs } from "@/lib/richText";
 import { SUB_LABEL_CLS, BODY_TEXT_CLS } from "@/app/components/projects/labelStyles";
 
@@ -148,6 +149,12 @@ function CaseStudyLayout({ project }: { project: Project }) {
         </div>
         <TechChips skills={project.skills} />
       </motion.div>
+
+      {project.architectureImage && (
+        <Section title="Architecture">
+          <ArchitectureDiagram image={project.architectureImage} />
+        </Section>
+      )}
 
       <Section title="Problems I solved">
         <ChallengeAccordion challenges={project.challenges} />
