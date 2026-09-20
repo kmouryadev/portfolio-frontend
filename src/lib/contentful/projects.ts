@@ -59,6 +59,7 @@ function toProject(
     slug: (fields.slug || "").trim(),
     summary: fields.summary || "",
     projectType: fields.projectType || "personal",
+    status: fields.status || "completed",
     clientAlias: fields.clientAlias || null,
     skills,
     challenges,

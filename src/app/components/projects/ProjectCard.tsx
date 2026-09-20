@@ -66,7 +66,14 @@ export default function ProjectCard({
               <h3 className="font-display font-bold text-[clamp(15px,2vw,17px)] leading-[1.3] text-[var(--text)]">
                 {project.title}
               </h3>
-              <TypeBadge type={project.projectType} />
+              <div className="flex flex-col items-end gap-1.5 shrink-0">
+                <TypeBadge type={project.projectType} />
+                {project.status === "in-progress" && (
+                  <span className="inline-block text-[11px] font-semibold px-2.5 py-1 rounded-full border whitespace-nowrap text-amber-300 border-amber-500/60 bg-amber-500/10">
+                    Building now
+                  </span>
+                )}
+              </div>
             </div>
 
             {hasCaseStudy && (

@@ -4,6 +4,7 @@ export type {
   Experience,
   Project,
   ProjectType,
+  ProjectStatus,
   ProjectLink,
   Challenge,
   Skill,

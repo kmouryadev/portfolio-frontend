@@ -89,12 +89,14 @@ export interface ExperienceFields {
 }
 
 export type ProjectType = "personal" | "professional";
+export type ProjectStatus = "completed" | "in-progress";
 
 export interface ProjectFields {
   title: string;
   slug: string;
   summary: string;
   projectType: ProjectType;
+  status?: ProjectStatus;
   clientAlias?: string;
   skill?: CDALink[];
   challenges?: CDALink[];
@@ -186,6 +188,7 @@ export interface Project {
   slug: string;
   summary: string;
   projectType: ProjectType;
+  status: ProjectStatus;
   clientAlias: string | null;
   skills: Skill[];
   challenges: Challenge[];

@@ -31,6 +31,7 @@ function makeProject(overrides: Partial<Project>): Project {
     slug: "untitled",
     summary: "A project.",
     projectType: "personal",
+    status: "completed",
     clientAlias: null,
     skills: [],
     challenges: [],
