@@ -208,3 +208,27 @@ export interface SkillGroup {
   category: string;
   skills: Skill[];
 }
+
+export type AchievementType = "Award" | "Certificate";
+
+export interface AchievementFields {
+  title: string;
+  company: string;
+  type: AchievementType;
+  timeline: string;
+  description?: string;
+  image?: CDALink;
+  credentialUrl?: string;
+  order?: number;
+}
+
+export interface Achievement {
+  title: string;
+  company: string;
+  type: AchievementType;
+  timeline: string;
+  description: string;
+  imageUrl: string | null;
+  credentialUrl: string | null;
+  order: number;
+}

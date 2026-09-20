@@ -35,7 +35,6 @@ export default function About({ config }: { config: SiteConfig }) {
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 200px, 280px"
-                priority
               />
             )}
           </div>

@@ -36,7 +36,12 @@ export default function SelectedWork({ projects }: { projects: Project[] }) {
 
         <div className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,320px),1fr))] gap-6">
           {projects.map((project, index) => (
-            <ProjectCard key={project.slug} project={project} index={index} />
+            <ProjectCard
+              key={project.slug}
+              project={project}
+              index={index}
+              priority={index === 0}
+            />
           ))}
         </div>
       </div>

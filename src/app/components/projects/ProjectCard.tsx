@@ -13,10 +13,12 @@ export default function ProjectCard({
   project,
   index = 0,
   showAllSkills = false,
+  priority = false,
 }: {
   project: Project;
   index?: number;
   showAllSkills?: boolean;
+  priority?: boolean;
 }) {
   const prefersReduced = useReducedMotion();
   const hasCaseStudy = project.challenges.length > 0;
@@ -47,7 +49,8 @@ export default function ProjectCard({
                 alt={project.title}
                 fill
                 className="object-cover"
-                sizes="(max-width: 640px) 100vw, 33vw"
+                sizes="(max-width: 640px) 100vw, (max-width: 1000px) 50vw, 360px"
+                priority={priority}
               />
             </div>
           ) : (

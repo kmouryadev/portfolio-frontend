@@ -58,9 +58,9 @@ export default function Skills({ skillGroups }: { skillGroups: SkillGroup[] }) {
                         <Image
                           src={skill.icon}
                           alt={skill.label}
-                          width={32}
-                          height={32}
-                          className="object-contain"
+                          width={28}
+                          height={28}
+                          className="w-7 h-7 object-contain"
                         />
                       ) : (
                         <span className="font-display text-base font-bold text-[var(--accent)]">

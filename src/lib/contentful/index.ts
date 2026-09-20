@@ -8,6 +8,8 @@ export type {
   Challenge,
   Skill,
   SkillGroup,
+  Achievement,
+  AchievementType,
 } from "./types";
 
 export { getSiteConfig } from "./site-config";
@@ -19,3 +21,4 @@ export {
   getProjectSlugs,
 } from "./projects";
 export { getSkillGroups } from "./skills";
+export { getAchievements } from "./achievements";

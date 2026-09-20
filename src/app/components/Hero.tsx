@@ -200,7 +200,7 @@ const FloatingIcons = memo(function FloatingIcons({
                     alt={skill.label}
                     width={34}
                     height={34}
-                    className="object-contain"
+                    className="w-[34px] h-[34px] object-contain"
                   />
                 ) : (
                   <div className="w-[34px] h-[34px] bg-[var(--bg-card2)] rounded-lg flex items-center justify-center">
